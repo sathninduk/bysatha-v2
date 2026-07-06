@@ -1138,7 +1138,6 @@ html[data-theme="light"] .planet::after { opacity: 0.35; }
   }
   .hero-intro { max-width: 100%; }
   .hero-intro h1 { font-size: clamp(2.3rem, 9.5vw, 3.6rem); }
-  .hero-line { max-width: 560px; }
   .uni-controls { right: auto; left: 22px; bottom: 20px; }
 }
 
