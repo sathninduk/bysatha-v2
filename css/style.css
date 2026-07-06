@@ -743,8 +743,28 @@ html[data-theme="light"] .universe-wrap {
   box-shadow: 0 0 10px rgba(124, 140, 255, 0.7);
 }
 
-.t-when { font-size: 0.76rem; color: var(--cyan); letter-spacing: 0.06em; margin-bottom: 6px; }
-.t-body h3 { font-size: 1.08rem; margin: 0 0 6px; }
+/* header row: company logo chip + title */
+.t-head { display: flex; align-items: center; gap: 14px; }
+.t-head > div { min-width: 0; }
+.t-logo {
+  flex: none;
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  background: #ffffff;
+  display: grid;
+  place-items: center;
+  padding: 7px;
+  border: 1px solid var(--line);
+  box-shadow: 0 2px 12px rgba(2, 4, 12, 0.35);
+  transition: transform 0.25s;
+}
+.t-item:hover .t-logo { transform: scale(1.06); }
+.t-logo img { max-width: 100%; max-height: 100%; object-fit: contain; display: block; }
+
+.t-when { font-size: 0.76rem; color: var(--cyan); letter-spacing: 0.06em; margin-bottom: 3px; }
+.t-head h3 { font-size: 1.08rem; margin: 0; }
+.t-body { margin-top: 10px; }
 .t-body p { color: var(--muted); margin: 0; font-size: 0.95rem; }
 .t-body strong { color: var(--text); }
 
