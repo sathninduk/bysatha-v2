@@ -5,8 +5,13 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 TMP=$(mktemp -d)
 for owner in sathninduk wolfigs chatsapi dpacks-technology project-evilcodes bysatha; do
-  gh api "users/$owner/repos?per_page=100&type=owner" \
-    --jq '.[] | select(.fork==false) | {name, owner: .owner.login, stars: .stargazers_count, forks: .forks_count, lang: .language, desc: .description, url: .html_url, pushed: .pushed_at}' 2>/dev/null
+  if out=$(gh api "users/$owner/repos?per_page=100&type=owner" \
+    --jq '.[] | select(.fork==false) | {name, owner: .owner.login, stars: .stargazers_count, forks: .forks_count, lang: .language, desc: .description, url: .html_url, pushed: .pushed_at}' \
+    2>/dev/null); then
+    printf '%s\n' "$out"
+  else
+    echo "warn: could not fetch repos for $owner (org token policy?)" >&2
+  fi
 done > "$TMP/repos.jsonl"
 # contribution calendar: GraphQL caps each query at 1 year, so pull
 # five 1-year windows and merge them into a 5-year field
@@ -17,16 +22,29 @@ for i in range(5):
     print((t.replace(year=t.year-i-1) + datetime.timedelta(days=1)).isoformat() + 'T00:00:00Z',
           t.replace(year=t.year-i).isoformat() + 'T23:59:59Z')
 " | while read -r FROM TO; do
-  gh api graphql \
+  if out=$(gh api graphql \
     -f query='query($from:DateTime!,$to:DateTime!){ user(login:"sathninduk"){ contributionsCollection(from:$from,to:$to){ totalCommitContributions totalPullRequestContributions contributionCalendar { totalContributions weeks { contributionDays { contributionCount date } } } } }}' \
-    -F from="$FROM" -F to="$TO"
-  printf '\n'
+    -F from="$FROM" -F to="$TO" 2>/dev/null); then
+    printf '%s\n' "$out"
+  else
+    echo "warn: contribution window $FROM failed" >&2
+  fi
 done > "$TMP/contrib.jsonl"
 python3 - "$TMP" <<'EOF'
 import json, sys, datetime
 tmp = sys.argv[1]
-windows = [json.loads(l)['data']['user']['contributionsCollection']
-           for l in open(f'{tmp}/contrib.jsonl') if l.strip()]
+windows = []
+for l in open(f'{tmp}/contrib.jsonl'):
+    if not l.strip():
+        continue
+    try:
+        u = json.loads(l).get('data', {}).get('user')
+        if u and u.get('contributionsCollection'):
+            windows.append(u['contributionsCollection'])
+    except json.JSONDecodeError:
+        continue
+if not windows:
+    sys.exit("error: no contribution windows fetched — leaving snapshot unchanged")
 # windows[0] is the most recent year — keep its headline stats
 d = windows[0]
 cal = d['contributionCalendar']
@@ -48,7 +66,26 @@ for ds, count in day_map.items():
     weeks[off // 7][off % 7] = count
 five_year_total = sum(day_map.values())
 start_date = first_sunday.isoformat()
-repos = [json.loads(l) for l in open(f'{tmp}/repos.jsonl')]
+
+# guard: a token without private-contribution visibility produces a
+# much smaller total — don't overwrite a richer snapshot with it
+import re as _re, os as _os
+if _os.path.exists('js/github-data.js'):
+    m = _re.search(r'"fiveYearTotal":\s*(\d+)', open('js/github-data.js').read())
+    if m and five_year_total < int(m.group(1)) * 0.6:
+        print(f"skip: new total {five_year_total} looks degraded vs existing {m.group(1)} "
+              "(token lacks private-contribution or org access) — snapshot unchanged")
+        raise SystemExit(0)
+repos = []
+for l in open(f'{tmp}/repos.jsonl'):
+    if not l.strip():
+        continue
+    try:
+        r = json.loads(l)
+        if isinstance(r, dict) and 'name' in r and 'owner' in r:
+            repos.append(r)
+    except json.JSONDecodeError:
+        continue
 total_stars = sum(r['stars'] for r in repos)
 langs = {}
 for r in repos:
