@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sathnindu Kottage — Senior Software Engineer · Framework Author · Researcher</title>
+  <meta name="description" content="Sathnindu Kottage — Senior FinTech Software Engineer, open-source framework author, and published researcher. A career rendered as an interactive version-controlled timeline."/>
+  <meta property="og:title" content="Sathnindu Kottage — The Human Repository"/>
+  <meta property="og:description" content="Senior FinTech engineer · ICCTA 2026 first author · creator of Prism, Facet, GitParallax and more. Explore the commit history of a career."/>
+  <meta property="og:image" content="https://bysatha.com/img/profile_photo.jpg"/>
+  <meta property="og:url" content="https://bysatha.com"/>
+  <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+
+<div class="aurora"></div>
+<canvas id="space"></canvas>
+
+<!-- ============ NAV ============ -->
+<nav class="nav">
+  <a class="brand" href="#top">Sathnindu <span class="accent">Kottage</span></a>
+  <div class="nav-links">
+    <a href="#universe-section">Timeline</a>
+    <a href="#career">Career</a>
+    <a href="#research">Research</a>
+    <a href="#oss">Open Source</a>
+    <a href="#community">Community</a>
+    <a href="#contact" class="nav-cta">Contact</a>
+    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">☀</button>
+  </div>
+</nav>
+
+<!-- ============ HERO / UNIVERSE ============ -->
+<header class="hero" id="top">
+  <div class="hero-intro">
+    <h1>Sathnindu <span class="accent">Kottage</span></h1>
+    <p class="hero-sub">
+      Senior FinTech Software Engineer · Framework Author · Published Researcher
+    </p>
+    <p class="hero-line">
+      I build the tools other engineers build with — engineered in Sri Lanka, published to the world.
+    </p>
+    <div class="hero-cta">
+      <a href="mailto:hello@bysatha.com" class="btn-primary">Get in touch</a>
+      <a href="https://github.com/sathninduk" target="_blank" rel="noreferrer" class="btn-outline">Follow on GitHub</a>
+    </div>
+    <p class="prompt mono">git log --graph --all — a career under version control. Drag to explore; select any commit.</p>
+  </div>
+
+  <div class="universe-wrap" id="universe-section">
+    <canvas id="universe"></canvas>
+    <div id="uni-tooltip"></div>
+    <div class="uni-controls">
+      <button onclick="universeJump('start')">⇤ 2005</button>
+      <span class="uni-hint">drag to travel through time · select a commit to inspect</span>
+      <button onclick="universeJump('head')">HEAD ⇥</button>
+    </div>
+  </div>
+</header>
+
+<!-- ============ INSPECTOR (slide-in panel) ============ -->
+<aside class="inspector" id="inspector">
+  <button class="insp-close" onclick="closeInspector()" aria-label="Close">✕</button>
+  <p class="insp-sha mono" id="insp-sha"></p>
+  <h3 id="insp-title"></h3>
+  <p class="insp-meta mono" id="insp-meta"></p>
+  <img id="insp-img" alt="" style="display:none"/>
+  <p id="insp-desc"></p>
+</aside>
+<div class="insp-backdrop" id="insp-backdrop" onclick="closeInspector()"></div>
+
+<!-- ============ ABOUT ============ -->
+<section class="section about reveal" id="about">
+  <div class="about-grid">
+    <div class="about-photo">
+      <img src="img/profile_photo.jpg" alt="Sathnindu Kottage"/>
+    </div>
+    <div class="about-text">
+      <p class="sec-label mono">ABOUT</p>
+      <h2>Engineering beneath the <span class="accent">application layer</span>.</h2>
+      <p>
+        I spent five years shipping production FinTech systems while completing a First Class
+        Honours degree — and used the hours in between to build open-source frameworks and
+        teach engineering to the next generation of students.
+      </p>
+      <p>
+        My focus is <strong>framework engineering</strong>: not writing applications, but building
+        the layer beneath them. The research form of that work was presented as a first-author
+        paper at ICCTA 2026 in Vienna. Its open-source form is
+        <a href="https://github.com/wolfigs" target="_blank" rel="noreferrer">Wolfigs</a> —
+        developer tooling engineered in Sri Lanka for a global audience.
+      </p>
+      <div class="stats" id="stats"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CAREER ============ -->
+<section class="section reveal" id="career">
+  <p class="sec-label mono">CAREER</p>
+  <h2>Professional experience</h2>
+  <div class="timeline">
+    <div class="t-item">
+      <div class="t-when mono">Mar 2026 — Present</div>
+      <div class="t-body">
+        <h3>Senior FinTech Software Engineer · Arimac Digital <span class="pill head-pill mono">HEAD</span></h3>
+        <p>Leading backend engineering and DevOps teams for FinTech and BNPL products, including
+          <strong>PayLater</strong> — a Qatar-founded Buy Now Pay Later platform. Architecture
+          ownership, mentoring and release engineering. Promoted within 16 months.</p>
+      </div>
+    </div>
+    <div class="t-item">
+      <div class="t-when mono">Dec 2024 — Mar 2026</div>
+      <div class="t-body">
+        <h3>FinTech Software Engineer · Arimac Digital</h3>
+        <p>Software architecture for production FinTech systems, mentoring of junior engineers, DevOps and server-level operations.</p>
+      </div>
+    </div>
+    <div class="t-item">
+      <div class="t-when mono">Jun — Sep 2024</div>
+      <div class="t-body">
+        <h3>Senior Software Engineer · Code94 Labs</h3>
+        <p>Full-stack product engineering.</p>
+      </div>
+    </div>
+    <div class="t-item">
+      <div class="t-when mono">2020 — 2024</div>
+      <div class="t-body">
+        <h3>Trainee → Engineer → Senior Engineer · Coduza</h3>
+        <p>Progressed from intern to lead engineer across <strong>30+ client projects</strong>; designed and
+          built the company's CI/CD infrastructure.</p>
+      </div>
+    </div>
+    <div class="t-item">
+      <div class="t-when mono">Feb — Aug 2022</div>
+      <div class="t-body">
+        <h3>Software Engineering Consultant · CBC Tech Solutions</h3>
+        <p>Led development of the official intranet of <strong>Commercial Bank PLC</strong> — one of
+          Sri Lanka's largest private banks — in parallel with full-time work and undergraduate study.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ RESEARCH ============ -->
+<section class="section research reveal" id="research">
+  <p class="sec-label mono">RESEARCH</p>
+  <h2>Published at <span class="accent-purple">ICCTA 2026, Vienna</span></h2>
+  <div class="research-grid">
+    <div class="research-text">
+      <p class="paper-title">
+        "FractalX: Automated Migration of Modular Spring Boot Monoliths to Production-Ready
+        Microservices via AST-Driven Static Decomposition"
+      </p>
+      <p class="paper-meta mono">
+        First author · 12th International Conference on Computer Technology Applications
+        (ICCTA 2026) · FH JOANNEUM, Vienna, Austria · May 2026
+      </p>
+      <p>
+        Deferred architectural decomposition carries a well-documented industry cost. FractalX
+        addresses it directly: an AST-driven framework that statically decomposes modular Spring
+        Boot monoliths into production-ready microservices. The research line continues as
+        <strong>Prism</strong>, its open-source successor.
+      </p>
+      <p class="mono paper-links">
+        <a href="https://scholar.google.com/citations?user=kcLuuSEAAAAJ&hl=en" target="_blank" rel="noreferrer">Google Scholar ↗</a>
+        <a href="https://github.com/wolfigs/prism" target="_blank" rel="noreferrer">Prism (successor) ↗</a>
+      </p>
+    </div>
+    <div class="research-photos">
+      <img src="img/iccta/vienna_group.jpg" alt="ICCTA 2026 conference, Vienna" class="rp-main"/>
+      <div class="rp-row">
+        <img src="img/iccta/vienna_2.jpg" alt="Presenting at ICCTA 2026"/>
+        <img src="img/iccta/certificate.jpg" alt="Certificate of Appreciation, FH JOANNEUM"/>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ OPEN SOURCE ============ -->
+<section class="section reveal" id="oss">
+  <p class="sec-label mono">OPEN SOURCE</p>
+  <h2>Tools for the people who build the tools</h2>
+  <p class="sec-sub">3,500+ GitHub contributions. Frameworks and developer tooling, engineered in Sri Lanka and published globally.</p>
+  <div class="projects" id="projects"></div>
+</section>
+
+
+<!-- ============ GITHUB LIVE ============ -->
+<section class="section reveal" id="github">
+  <p class="sec-label mono">GITHUB · LIVE</p>
+  <h2>The repository, <span class="accent">measured</span></h2>
+  <p class="sec-sub">Pulled from the GitHub API — profile, repositories and a year of contribution activity.</p>
+  <div class="gh-stats" id="gh-stats"></div>
+  <div class="constellation-wrap">
+    <div class="c-head">
+      <h3>Contribution constellation</h3>
+      <span class="c-note" id="c-note"></span>
+    </div>
+    <canvas id="constellation"></canvas>
+  </div>
+  <div class="gh-langs" id="gh-langs"></div>
+  <div class="gh-lang-legend" id="gh-lang-legend"></div>
+  <div class="repo-grid" id="repo-grid"></div>
+  <p class="gh-foot" id="gh-foot"></p>
+</section>
+
+<!-- ============ COMMUNITY ============ -->
+<section class="section community reveal" id="community">
+  <p class="sec-label mono">COMMUNITY</p>
+  <h2>Leadership &amp; <span class="accent-pink">knowledge sharing</span></h2>
+  <p class="sec-sub">
+    Secretary of the Software Engineering Student Community (SESC) at SLIIT · Batch Representative,
+    Years 3 &amp; 4 · technical sessions, industry meetups, and community initiatives.
+  </p>
+  <div class="gallery">
+    <figure><img src="img/sesc/git101.jpg" alt="GIT & GitHub 101 session" loading="lazy"/><figcaption>GIT &amp; GitHub 101 — Feb 2026</figcaption></figure>
+    <figure><img src="img/sesc/fractalx_session.jpg" alt="Microservices and FractalX session" loading="lazy"/><figcaption>Microservices &amp; FractalX — Apr 2026</figcaption></figure>
+    <figure><img src="img/sesc/think_engineer.jpg" alt="Think Like an Engineer session" loading="lazy"/><figcaption>Think Like an Engineer — Apr 2026</figcaption></figure>
+    <figure><img src="img/sesc/dev_meetup.jpg" alt="SESC Dev Meetup" loading="lazy"/><figcaption>Dev Meetup speaker — May 2026</figcaption></figure>
+    <figure><img src="img/sesc/hacknest.jpg" alt="Hacknest meetup" loading="lazy"/><figcaption>Hacknest series — Sep 2025</figcaption></figure>
+    <figure><img src="img/sesc/flood_relief.jpg" alt="Rebuild Their Future flood relief" loading="lazy"/><figcaption>Rebuild Their Future — Jan 2026</figcaption></figure>
+  </div>
+</section>
+
+<!-- ============ HONORS ============ -->
+<section class="section honors reveal">
+  <p class="sec-label mono">RECOGNITION</p>
+  <h2>Honors &amp; achievements</h2>
+  <div class="tags">
+    <span class="tag mono">First Class Honours — CGPA 3.74</span>
+    <span class="tag mono">Dean's List × 5</span>
+    <span class="tag mono">4.0 semester GPA × 2</span>
+    <span class="tag mono">ICCTA 2026 first author</span>
+    <span class="tag mono">Astronomy Olympiad medals × 6</span>
+    <span class="tag mono">SESC Secretary</span>
+    <span class="tag mono">Batch Representative × 2 yrs</span>
+    <span class="tag mono">Higher Diploma in IT</span>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section class="section contact reveal" id="contact">
+  <p class="sec-label mono">CONTACT</p>
+  <h2>Get in <span class="accent">touch</span></h2>
+  <p class="sec-sub">Open to engineering leadership, research collaboration and consulting.</p>
+  <div class="contact-big">
+    <a href="mailto:hello@bysatha.com" class="contact-line">hello@bysatha.com</a>
+    <a href="tel:+94711226532" class="contact-line">(+94) 71 122 6532</a>
+  </div>
+  <div class="socials mono">
+    <a href="https://github.com/sathninduk" target="_blank" rel="noreferrer">GitHub</a>
+    <a href="https://www.linkedin.com/in/sathnindu/" target="_blank" rel="noreferrer">LinkedIn</a>
+    <a href="https://stackoverflow.com/users/15429494/sathnindu-kottage" target="_blank" rel="noreferrer">Stack Overflow</a>
+    <a href="https://scholar.google.com/citations?user=kcLuuSEAAAAJ&hl=en" target="_blank" rel="noreferrer">Google Scholar</a>
+    <a href="https://github.com/wolfigs" target="_blank" rel="noreferrer">Wolfigs</a>
+  </div>
+</section>
+
+<footer class="footer">
+  <p class="mono">© <span id="year"></span> Sathnindu Kottage — a repository under active development.</p>
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/github-data.js"></script>
+<script src="js/space.js"></script>
+<script src="js/universe.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
