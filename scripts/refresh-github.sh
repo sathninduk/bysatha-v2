@@ -8,13 +8,46 @@ for owner in sathninduk wolfigs chatsapi dpacks-technology project-evilcodes bys
   gh api "users/$owner/repos?per_page=100&type=owner" \
     --jq '.[] | select(.fork==false) | {name, owner: .owner.login, stars: .stargazers_count, forks: .forks_count, lang: .language, desc: .description, url: .html_url, pushed: .pushed_at}' 2>/dev/null
 done > "$TMP/repos.jsonl"
-gh api graphql -f query='{ user(login:"sathninduk"){ contributionsCollection { totalCommitContributions totalPullRequestContributions contributionCalendar { totalContributions weeks { contributionDays { contributionCount date } } } } }}' > "$TMP/contrib.json"
+# contribution calendar: GraphQL caps each query at 1 year, so pull
+# five 1-year windows and merge them into a 5-year field
+python3 -c "
+import datetime
+t = datetime.date.today()
+for i in range(5):
+    print((t.replace(year=t.year-i-1) + datetime.timedelta(days=1)).isoformat() + 'T00:00:00Z',
+          t.replace(year=t.year-i).isoformat() + 'T23:59:59Z')
+" | while read -r FROM TO; do
+  gh api graphql \
+    -f query='query($from:DateTime!,$to:DateTime!){ user(login:"sathninduk"){ contributionsCollection(from:$from,to:$to){ totalCommitContributions totalPullRequestContributions contributionCalendar { totalContributions weeks { contributionDays { contributionCount date } } } } }}' \
+    -F from="$FROM" -F to="$TO"
+  printf '\n'
+done > "$TMP/contrib.jsonl"
 python3 - "$TMP" <<'EOF'
 import json, sys, datetime
 tmp = sys.argv[1]
-d = json.load(open(f'{tmp}/contrib.json'))['data']['user']['contributionsCollection']
+windows = [json.loads(l)['data']['user']['contributionsCollection']
+           for l in open(f'{tmp}/contrib.jsonl') if l.strip()]
+# windows[0] is the most recent year — keep its headline stats
+d = windows[0]
 cal = d['contributionCalendar']
-weeks = [[day['contributionCount'] for day in w['contributionDays']] for w in cal['weeks']]
+# merge all windows into one date→count map, then rebuild weeks
+day_map = {}
+for w in windows:
+    for wk in w['contributionCalendar']['weeks']:
+        for day in wk['contributionDays']:
+            day_map[day['date']] = day['contributionCount']
+dates = sorted(day_map)
+first = datetime.date.fromisoformat(dates[0])
+first_sunday = first - datetime.timedelta(days=(first.weekday() + 1) % 7)
+last = datetime.date.fromisoformat(dates[-1])
+n_weeks = (last - first_sunday).days // 7 + 1
+weeks = [[0] * 7 for _ in range(n_weeks)]
+for ds, count in day_map.items():
+    dt = datetime.date.fromisoformat(ds)
+    off = (dt - first_sunday).days
+    weeks[off // 7][off % 7] = count
+five_year_total = sum(day_map.values())
+start_date = first_sunday.isoformat()
 repos = [json.loads(l) for l in open(f'{tmp}/repos.jsonl')]
 total_stars = sum(r['stars'] for r in repos)
 langs = {}
@@ -34,7 +67,8 @@ data = {
   "login": "sathninduk",
   "profile": {"followers": 49, "publicRepos": 142, "sourceRepos": len(repos), "since": 2018},
   "contrib": {"lastYearTotal": cal['totalContributions'], "commits": d['totalCommitContributions'],
-              "prs": d['totalPullRequestContributions'], "totalStars": total_stars, "weeks": weeks},
+              "prs": d['totalPullRequestContributions'], "totalStars": total_stars,
+              "fiveYearTotal": five_year_total, "start": start_date, "weeks": weeks},
   "langs": [{"name": n, "count": c} for n, c in top_langs],
   "repos": [{"full": f"{r['owner']}/{r['name']}", "stars": r['stars'], "forks": r['forks'],
              "lang": r['lang'], "desc": (r['desc'] or '')[:110], "url": r['url']} for r in top_repos[:8]]

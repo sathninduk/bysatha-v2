@@ -137,15 +137,21 @@
     ghStats.querySelectorAll(".n").forEach((el) => countIO.observe(el));
   }
 
-  /* ---- contribution constellation ---- */
+  /* ---- contribution constellation (last 5 years) ---- */
   const cc = document.getElementById("constellation");
   const note = document.getElementById("c-note");
-  if (note) note.textContent = `${GH.contrib.lastYearTotal.toLocaleString()} contributions · last 12 months`;
+  if (note) {
+    note.textContent = GH.contrib.fiveYearTotal
+      ? `${GH.contrib.fiveYearTotal.toLocaleString()} contributions · last 5 years`
+      : `${GH.contrib.lastYearTotal.toLocaleString()} contributions · last 12 months`;
+  }
   if (cc) {
     const cctx = cc.getContext("2d");
     const weeks = GH.contrib.weeks;
     const maxC = Math.max(1, ...weeks.flat());
+    const dense = weeks.length > 120;      // 5-year field → finer stars
     let stars = [];
+    let yearMarks = [];                    // vertical guides at Jan 1
 
     function build() {
       const dpr = Math.min(2, window.devicePixelRatio || 1);
@@ -153,7 +159,7 @@
       cc.width = w * dpr; cc.height = h * dpr;
       cctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       const gx = w / (weeks.length + 1);
-      const gy = (h - 22) / 7;
+      const gy = (h - 26) / 7;
       stars = [];
       weeks.forEach((week, wi) => {
         week.forEach((count, di) => {
@@ -163,13 +169,26 @@
           stars.push({
             x: gx * (wi + 0.5) + jx * gx * 0.5,
             y: 12 + gy * (di + 0.5) + jy * gy * 0.5,
-            r: 0.8 + 2.6 * Math.sqrt(count / maxC),
-            a: 0.35 + 0.65 * (count / maxC),
+            r: (dense ? 0.55 : 0.8) + (dense ? 1.9 : 2.6) * Math.sqrt(count / maxC),
+            a: 0.32 + 0.68 * (count / maxC),
             p: Math.random() * Math.PI * 2,
             count,
           });
         });
       });
+
+      /* year boundaries derived from the snapshot start date */
+      yearMarks = [];
+      if (GH.contrib.start) {
+        const start = new Date(GH.contrib.start + "T00:00:00Z");
+        for (let wi = 0; wi < weeks.length - 1; wi++) {
+          const d0 = new Date(start.getTime() + wi * 7 * 86400e3);
+          const d1 = new Date(start.getTime() + (wi + 1) * 7 * 86400e3);
+          if (d0.getUTCFullYear() !== d1.getUTCFullYear()) {
+            yearMarks.push({ x: gx * (wi + 1.5), label: String(d1.getUTCFullYear()) });
+          }
+        }
+      }
     }
 
     function drawCC(now) {
@@ -178,6 +197,20 @@
       const dark = document.documentElement.dataset.theme === "dark";
       const core = dark ? "61,220,151" : "10,158,107";
       const halo = dark ? "56,225,255" : "8,145,178";
+      const faint = dark ? "233,237,255" : "14,21,49";
+
+      /* faint year guides under the stars */
+      cctx.font = "10px ui-monospace, monospace";
+      for (const m of yearMarks) {
+        cctx.strokeStyle = `rgba(${faint},0.09)`;
+        cctx.beginPath();
+        cctx.moveTo(m.x, 6);
+        cctx.lineTo(m.x, h - 18);
+        cctx.stroke();
+        cctx.fillStyle = `rgba(${faint},0.35)`;
+        cctx.fillText(m.label, m.x + 4, h - 6);
+      }
+
       for (const s of stars) {
         const tw = 0.7 + 0.3 * Math.sin(s.p + now / 800);
         cctx.beginPath();
