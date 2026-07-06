@@ -253,12 +253,31 @@ html[data-theme="light"] .nav {
   top: 0;
   left: 0;
   right: 0;
-  height: 100vh;
+  height: 118vh;                          /* run past the hero edge */
   overflow: hidden;
   pointer-events: none;
   z-index: 0;
   --arc: clamp(130px, 22vh, 240px);      /* visible arc height */
   --psize: max(240vw, 1700px);           /* planet diameter */
+  /* dissolve gently instead of clipping at the viewport edge */
+  mask-image: linear-gradient(180deg, #000 62%, transparent 97%);
+  -webkit-mask-image: linear-gradient(180deg, #000 62%, transparent 97%);
+}
+/* planet arc stays at the first-viewport line inside the taller scene */
+.orbit-scene .planet { bottom: calc(-1 * var(--psize) + var(--arc) + 18vh); }
+.orbit-scene .moon { bottom: calc(var(--arc) + 34vh); }
+
+/* soft bridge from the hero into the body */
+.hero::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 24vh;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(180deg, transparent 0%, var(--bg) 88%);
 }
 
 .planet {
