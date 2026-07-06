@@ -40,7 +40,7 @@
 
   --glow-indigo: 0 0 40px rgba(124, 140, 255, 0.25);
   --radius: 18px;
-  --nav-h: 62px;
+  --nav-h: 52px;
 
   --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
   --sans: "Mona Sans", -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
@@ -150,16 +150,16 @@ html[data-theme="light"] .aurora {
    ============================================================ */
 .nav {
   position: fixed;
-  top: 14px;
+  top: 12px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 60;
-  width: min(1100px, calc(100% - 28px));
+  width: min(980px, calc(100% - 24px));
   height: var(--nav-h);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 12px 0 20px;
+  padding: 0 8px 0 18px;
   border-radius: 999px;
   background: var(--panel);
   border: 1px solid var(--line);
@@ -174,35 +174,40 @@ html[data-theme="light"] .nav {
 .brand {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 9px;
+  font-family: "Archivo", var(--sans);
   font-weight: 800;
-  font-size: 1.02rem;
-  letter-spacing: -0.01em;
+  font-stretch: 115%;
+  font-size: 0.92rem;
+  letter-spacing: 0.07em;
   color: var(--text);
 }
 .brand:hover { text-decoration: none; }
 /* a tiny planet as the mark */
 .brand::before {
   content: "";
-  width: 20px;
-  height: 20px;
+  width: 15px;
+  height: 15px;
   border-radius: 50%;
   background:
     radial-gradient(circle at 32% 28%, #9db4ff 0%, #5a6cf0 40%, #241f66 85%);
-  box-shadow: 0 0 12px rgba(124, 140, 255, 0.8), inset -3px -3px 6px rgba(0,0,0,0.5);
+  box-shadow: 0 0 10px rgba(124, 140, 255, 0.8), inset -2px -2px 5px rgba(0,0,0,0.5);
   flex: none;
 }
 
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 2px;
 }
 .nav-links a {
+  font-family: "Archivo", var(--sans);
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
   color: var(--muted);
-  font-size: 0.92rem;
-  font-weight: 550;
-  padding: 8px 13px;
+  padding: 7px 11px;
   border-radius: 999px;
   transition: color 0.2s, background 0.2s;
 }
@@ -211,20 +216,20 @@ html[data-theme="light"] .nav {
 .nav-cta {
   color: #fff !important;
   background: var(--grad) !important;
-  font-weight: 700 !important;
-  box-shadow: 0 2px 16px rgba(90, 120, 255, 0.45);
+  box-shadow: 0 2px 14px rgba(90, 120, 255, 0.45);
+  padding: 7px 15px !important;
 }
 .nav-cta:hover { filter: brightness(1.1); }
 
 .theme-toggle {
-  width: 38px;
-  height: 38px;
-  margin-left: 6px;
+  width: 32px;
+  height: 32px;
+  margin-left: 5px;
   border-radius: 50%;
   border: 1px solid var(--line);
   background: transparent;
   color: var(--text);
-  font-size: 1rem;
+  font-size: 0.88rem;
   cursor: pointer;
   transition: background 0.2s, transform 0.3s;
 }
