@@ -153,10 +153,14 @@
     hoverNode = null;
     if (tooltip) tooltip.style.display = "none";
   });
+  /* wheel: only claim horizontal gestures (trackpad side-swipe or
+     shift+wheel); plain vertical wheel scrolls the page normally */
   canvas.addEventListener("wheel", (e) => {
+    const horizontal = Math.abs(e.deltaX) > Math.abs(e.deltaY);
+    if (!horizontal && !e.shiftKey) return;
     e.preventDefault();
     introT = null; targetCamX = null;
-    camX += (Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY);
+    camX += horizontal ? e.deltaX : e.deltaY;
     clampCam();
   }, { passive: false });
 
