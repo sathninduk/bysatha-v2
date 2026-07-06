@@ -195,7 +195,7 @@
       const w = cc.clientWidth, h = cc.clientHeight;
       cctx.clearRect(0, 0, w, h);
       const dark = document.documentElement.dataset.theme === "dark";
-      const core = dark ? "61,220,151" : "10,158,107";
+      const core = dark ? "46,255,158" : "0,179,104";
       const halo = dark ? "56,225,255" : "8,145,178";
       const faint = dark ? "233,237,255" : "14,21,49";
 
@@ -267,6 +267,65 @@
 
   const foot = document.getElementById("gh-foot");
   if (foot) foot.textContent = `snapshot ${GH.fetched} · live refresh via public API when available`;
+
+  /* ---- live activity feed (unauthenticated public events API) ---- */
+  const actEl = document.getElementById("gh-activity");
+  if (actEl) {
+    const rel = (iso) => {
+      const s = (Date.now() - new Date(iso).getTime()) / 1000;
+      if (s < 3600) return `${Math.max(1, Math.floor(s / 60))}m ago`;
+      if (s < 86400) return `${Math.floor(s / 3600)}h ago`;
+      if (s < 604800) return `${Math.floor(s / 86400)}d ago`;
+      return new Date(iso).toLocaleDateString("en", { month: "short", day: "numeric" });
+    };
+    const describe = (e) => {
+      const repo = e.repo.name;
+      switch (e.type) {
+        case "PushEvent": {
+          const n = e.payload.commits ? e.payload.commits.length : 0;
+          return { icon: "⬆", text: `pushed ${n} commit${n === 1 ? "" : "s"} to`, repo };
+        }
+        case "PullRequestEvent":
+          return { icon: "⑂", text: `${e.payload.action} a pull request in`, repo };
+        case "IssuesEvent":
+          return { icon: "◉", text: `${e.payload.action} an issue in`, repo };
+        case "CreateEvent":
+          return { icon: "✦", text: `created ${e.payload.ref_type}${e.payload.ref ? ` ${e.payload.ref}` : ""} in`, repo };
+        case "ReleaseEvent":
+          return { icon: "⇱", text: `released ${e.payload.release.tag_name} of`, repo };
+        case "WatchEvent":
+          return { icon: "★", text: "starred", repo };
+        case "ForkEvent":
+          return { icon: "⑂", text: "forked", repo };
+        case "PublicEvent":
+          return { icon: "◍", text: "open-sourced", repo };
+        default:
+          return null;
+      }
+    };
+    fetch(`https://api.github.com/users/${GH.login}/events/public?per_page=30`)
+      .then((r) => (r.ok ? r.json() : []))
+      .then((events) => {
+        const rows = [];
+        for (const e of events) {
+          const d = describe(e);
+          if (!d) continue;
+          rows.push(
+            `<li>
+              <span class="a-icon">${d.icon}</span>
+              <span class="a-text">${d.text} <a href="https://github.com/${d.repo}" target="_blank" rel="noreferrer">${d.repo}</a></span>
+              <span class="a-time mono">${rel(e.created_at)}</span>
+            </li>`
+          );
+          if (rows.length >= 6) break;
+        }
+        if (rows.length) actEl.innerHTML = rows.join("");
+        else actEl.innerHTML = `<li><span class="a-text">Quiet right now — recent work may be in private repositories.</span></li>`;
+      })
+      .catch(() => {
+        actEl.innerHTML = `<li><span class="a-text">Live feed unavailable (API rate limit) — try again in a bit.</span></li>`;
+      });
+  }
 
   /* ---- best-effort live refresh (unauthenticated public API) ---- */
   fetch(`https://api.github.com/users/${GH.login}`)
