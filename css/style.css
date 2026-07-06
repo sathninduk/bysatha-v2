@@ -595,89 +595,13 @@ html[data-theme="light"] .planet::after { opacity: 0.35; }
 .insp-backdrop.open { opacity: 1; pointer-events: auto; }
 
 /* ============================================================
-   AURORA PASSES — between sections, the sky itself performs:
-   a flowing aurora curtain in the next section's colour, with
-   a bright breathing core ribbon on the horizon.
-   ============================================================ */
-.aurora-pass {
-  position: relative;
-  height: 170px;
-  margin-top: clamp(40px, 7vh, 76px);
-  overflow: hidden;
-  pointer-events: none;
-  /* broad ambient wash */
-  background: radial-gradient(62% 95% at 50% 55%,
-    color-mix(in srgb, var(--rail, var(--indigo)) 10%, transparent),
-    transparent 76%);
-}
-
-/* curtain streaks — tall soft rays swaying sideways */
-.aurora-pass::before {
-  content: "";
-  position: absolute;
-  inset: -34% -6%;
-  background: repeating-linear-gradient(97deg,
-    transparent 0px,
-    transparent 34px,
-    color-mix(in srgb, var(--rail, var(--indigo)) 13%, transparent) 44px,
-    color-mix(in srgb, var(--rail, var(--indigo)) 27%, transparent) 52px,
-    color-mix(in srgb, var(--rail, var(--indigo)) 10%, transparent) 60px,
-    transparent 72px,
-    transparent 96px);
-  mask: linear-gradient(180deg, transparent 0%, #000 32%, #000 64%, transparent 100%);
-  -webkit-mask: linear-gradient(180deg, transparent 0%, #000 32%, #000 64%, transparent 100%);
-  filter: blur(9px);
-  opacity: 0.85;
-  animation: aurora-sway 15s ease-in-out infinite alternate;
-}
-@keyframes aurora-sway {
-  from { transform: translateX(-3.5%) skewX(-5deg); }
-  to   { transform: translateX(3.5%)  skewX(6deg); }
-}
-
-/* core ribbon — a bright arc breathing on the horizon */
-.aurora-pass::after {
-  content: "";
-  position: absolute;
-  left: 7%;
-  right: 7%;
-  top: 55%;
-  height: 5px;
-  border-radius: 50%;
-  background: linear-gradient(90deg,
-    transparent 0%,
-    color-mix(in srgb, var(--rail, var(--indigo)) 85%, #ffffff) 24%,
-    var(--rail, var(--indigo)) 52%,
-    color-mix(in srgb, var(--rail, var(--indigo)) 70%, transparent) 80%,
-    transparent 100%);
-  filter: blur(3.5px);
-  box-shadow:
-    0 0 22px 5px  color-mix(in srgb, var(--rail, var(--indigo)) 42%, transparent),
-    0 0 80px 26px color-mix(in srgb, var(--rail, var(--indigo)) 16%, transparent);
-  animation: aurora-breathe 7s ease-in-out infinite alternate;
-}
-@keyframes aurora-breathe {
-  from { opacity: 0.6; transform: scaleY(1); }
-  to   { opacity: 1;   transform: scaleY(1.7); }
-}
-
-/* dayside: soft pastel light, quieter */
-html[data-theme="light"] .aurora-pass::before { opacity: 0.5; }
-html[data-theme="light"] .aurora-pass::after {
-  box-shadow:
-    0 0 18px 4px  color-mix(in srgb, var(--rail, var(--indigo)) 28%, transparent),
-    0 0 64px 20px color-mix(in srgb, var(--rail, var(--indigo)) 10%, transparent);
-}
-
-/* ============================================================
-/* ============================================================
    SECTIONS
    ============================================================ */
 .section {
   position: relative;
   max-width: 1160px;
   margin: 0 auto;
-  padding: 44px 22px 30px;
+  padding: 110px 22px 30px;
 }
 
 .sec-label {
