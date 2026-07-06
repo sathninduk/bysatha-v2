@@ -410,11 +410,26 @@ html[data-theme="light"] .planet::after { opacity: 0.35; }
   text-shadow: 0 2px 40px color-mix(in srgb, var(--bg) 70%, transparent);
 }
 
+.hero-role {
+  font-size: clamp(1.05rem, 2.2vw, 1.55rem);
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: 0.04em;
+  margin: clamp(14px, 2.4vh, 24px) 0 0;
+}
+
+.hero-skills {
+  font-size: clamp(0.74rem, 1.2vw, 0.85rem);
+  color: var(--cyan);
+  letter-spacing: 0.06em;
+  margin: 8px 0 0;
+}
+
 .hero-line {
   font-size: clamp(0.96rem, 1.5vw, 1.06rem);
   color: var(--muted);
   max-width: 480px;
-  margin: clamp(18px, 3vh, 30px) 0 26px;
+  margin: clamp(14px, 2.4vh, 22px) 0 26px;
 }
 
 .hero-cta {
