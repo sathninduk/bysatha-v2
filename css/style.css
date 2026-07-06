@@ -439,27 +439,37 @@ html[data-theme="light"] .planet::after { opacity: 0.35; }
   margin-bottom: clamp(22px, 4vh, 40px);
 }
 
+/* terminal-chip CTAs — same family as the timeline controls */
 .btn-primary, .btn-outline {
   display: inline-block;
-  padding: 13px 28px;
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+  padding: 12px 24px;
   border-radius: 999px;
-  font-weight: 700;
-  font-size: 0.98rem;
-  transition: transform 0.2s, box-shadow 0.2s, filter 0.2s;
-}
-.btn-primary {
-  color: #fff;
-  background: var(--grad);
-  box-shadow: 0 4px 28px rgba(90, 120, 255, 0.5);
-}
-.btn-primary:hover { transform: translateY(-2px); filter: brightness(1.12); text-decoration: none; }
-.btn-outline {
   color: var(--text);
   border: 1px solid var(--line-strong);
-  background: var(--card);
   backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s, background 0.2s;
 }
-.btn-outline:hover { transform: translateY(-2px); border-color: var(--accent); text-decoration: none; }
+.btn-primary {
+  background: var(--grad-soft);
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+  box-shadow: 0 0 24px rgba(124, 140, 255, 0.28);
+  text-decoration: none;
+}
+.btn-outline {
+  background: var(--panel);
+}
+.btn-outline:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+  text-decoration: none;
+}
 
 .prompt {
   font-size: 0.78rem;
