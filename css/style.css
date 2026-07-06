@@ -743,18 +743,18 @@ html[data-theme="light"] .universe-wrap {
   box-shadow: 0 0 10px rgba(124, 140, 255, 0.7);
 }
 
-/* header row: company logo chip + title */
+/* company header row: logo chip once per company + name + tenure */
 .t-head { display: flex; align-items: center; gap: 14px; }
-.t-head > div { min-width: 0; }
+.t-co { flex: 1 1 auto; min-width: 0; }
 .t-logo {
   flex: none;
-  width: 46px;
-  height: 46px;
-  border-radius: 12px;
+  width: 52px;
+  height: 52px;
+  border-radius: 13px;
   background: #ffffff;
   display: grid;
   place-items: center;
-  padding: 7px;
+  padding: 8px;
   border: 1px solid var(--line);
   box-shadow: 0 2px 12px rgba(2, 4, 12, 0.35);
   transition: transform 0.25s;
@@ -762,11 +762,74 @@ html[data-theme="light"] .universe-wrap {
 .t-item:hover .t-logo { transform: scale(1.06); }
 .t-logo img { max-width: 100%; max-height: 100%; object-fit: contain; display: block; }
 
-.t-when { font-size: 0.76rem; color: var(--cyan); letter-spacing: 0.06em; margin-bottom: 3px; }
-.t-head h3 { font-size: 1.08rem; margin: 0; }
-.t-body { margin-top: 10px; }
-.t-body p { color: var(--muted); margin: 0; font-size: 0.95rem; }
-.t-body strong { color: var(--text); }
+.t-when { font-size: 0.75rem; color: var(--cyan); letter-spacing: 0.05em; margin-bottom: 3px; }
+.t-co h3 { font-size: 1.2rem; margin: 0; letter-spacing: -0.01em; }
+
+.t-tags { flex: none; display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+.promo-badge {
+  font-size: 0.64rem;
+  padding: 3px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+  color: var(--green);
+  border: 1px solid color-mix(in srgb, var(--green) 42%, transparent);
+  background: color-mix(in srgb, var(--green) 13%, transparent);
+}
+.promo-badge.concurrent {
+  color: var(--amber);
+  border-color: color-mix(in srgb, var(--amber) 42%, transparent);
+  background: color-mix(in srgb, var(--amber) 13%, transparent);
+}
+
+/* promotion ladder — one rung per title held at the company */
+.t-roles {
+  position: relative;
+  margin-top: 16px;
+  padding-left: 24px;
+}
+.t-roles::before {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 6px;
+  bottom: 8px;
+  width: 2px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, var(--indigo), rgba(124, 140, 255, 0.06));
+}
+/* if a company has only one rung, hide the connector line */
+.t-roles:has(.t-role:only-child)::before { display: none; }
+
+.t-role { position: relative; padding-bottom: 16px; }
+.t-role:last-child { padding-bottom: 0; }
+.t-role::before {
+  content: "";
+  position: absolute;
+  left: -24px;
+  top: 5px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--panel-solid);
+  border: 2px solid var(--indigo);
+}
+.t-role.is-current::before {
+  background: var(--indigo);
+  box-shadow: 0 0 10px rgba(124, 140, 255, 0.85);
+}
+
+.r-title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 12px;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+}
+.r-when { font-size: 0.73rem; font-weight: 400; color: var(--cyan); letter-spacing: 0.04em; }
+.t-role p { color: var(--muted); margin: 5px 0 0; font-size: 0.92rem; }
+.t-role strong { color: var(--text); }
 
 .pill {
   display: inline-block;
@@ -1091,6 +1154,9 @@ html[data-theme="light"] .universe-wrap {
     from { transform: rotate(0deg)   translateY(-126px); }
     to   { transform: rotate(360deg) translateY(-126px); }
   }
+  .t-head { flex-wrap: wrap; }
+  .t-tags { flex-direction: row; order: 3; width: 100%; justify-content: flex-start; margin-top: 2px; }
+  .t-logo { width: 46px; height: 46px; }
 }
 
 /* ---------- reduced motion ---------- */
