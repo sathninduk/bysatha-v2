@@ -13,10 +13,10 @@
   const isDark = () => document.documentElement.dataset.theme === "dark";
   function themeC() {
     return isDark()
-      ? { tick: "rgba(233,237,255,0.05)", tickText: "rgba(233,237,255,0.30)",
-          dotFill: "#0b1024", labelBg: "rgba(9,13,29,0.9)", headText: "#ffc75c" }
-      : { tick: "rgba(14,21,49,0.07)", tickText: "rgba(14,21,49,0.38)",
-          dotFill: "#ffffff", labelBg: "rgba(255,255,255,0.94)", headText: "#9a6700" };
+      ? { tick: "rgba(250,247,243,0.06)", tickText: "rgba(250,247,243,0.32)",
+          dotFill: "#171716", labelBg: "rgba(17,17,16,0.92)", headText: "#ff6b4a" }
+      : { tick: "rgba(17,17,16,0.07)", tickText: "rgba(17,17,16,0.40)",
+          dotFill: "#fffdf9", labelBg: "rgba(250,247,243,0.95)", headText: "#e04f2e" };
   }
 
   /* ---------- layout constants ---------- */
