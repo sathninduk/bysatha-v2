@@ -405,7 +405,7 @@ html[data-theme="light"] .planet::after { opacity: 0.35; }
 }
 
 .hero-intro h1 {
-  font-size: clamp(3rem, 8.2vw, 6.6rem);
+  font-size: clamp(2.4rem, 5.6vw, 4.6rem);
   margin: 0;
   text-shadow: 0 2px 40px color-mix(in srgb, var(--bg) 70%, transparent);
 }
@@ -1119,7 +1119,7 @@ html[data-theme="light"] .planet::after { opacity: 0.35; }
       transparent 78%);
   }
   .hero-intro { max-width: 100%; }
-  .hero-intro h1 { font-size: clamp(3rem, 13.5vw, 5rem); }
+  .hero-intro h1 { font-size: clamp(2.3rem, 9.5vw, 3.6rem); }
   .hero-line { max-width: 560px; }
   .uni-controls { right: auto; left: 22px; bottom: 20px; }
 }
