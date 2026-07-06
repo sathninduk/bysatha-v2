@@ -235,7 +235,10 @@ html[data-theme="light"] .nav {
    ============================================================ */
 .hero {
   position: relative;
-  padding: calc(var(--nav-h) + 60px) 22px 90px;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  padding: calc(var(--nav-h) + 40px) 22px 70px;
 }
 
 /* the planet: a huge circle whose top arc glows at the bottom
@@ -339,13 +342,44 @@ html[data-theme="light"] .planet::after { opacity: 0.35; }
   100% { transform: translate(110vw, 0) scale(0.8); }
 }
 
-.hero-intro {
-  position: relative;
+/* the git-graph fills the whole hero sky */
+.hero > #universe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+/* shading: left scrim so the overlaid type stays readable */
+.hero-scrim {
+  position: absolute;
+  inset: 0;
   z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(96deg,
+    color-mix(in srgb, var(--bg) 94%, transparent) 0%,
+    color-mix(in srgb, var(--bg) 82%, transparent) 30%,
+    color-mix(in srgb, var(--bg) 40%, transparent) 52%,
+    transparent 72%);
+}
+
+.hero-grid {
+  position: relative;
+  z-index: 3;
+  width: 100%;
   max-width: 1160px;
   margin: 0 auto;
-  padding-top: clamp(20px, 4vh, 48px);
 }
+
+/* text block overlaid on the left; empty areas let the sky
+   receive drags, while links/buttons stay clickable */
+.hero-intro {
+  max-width: 620px;
+  pointer-events: none;
+}
+.hero-intro a,
+.hero-intro button { pointer-events: auto; }
 
 /* thin editorial rule with year + since */
 .hero-top {
@@ -356,7 +390,7 @@ html[data-theme="light"] .planet::after { opacity: 0.35; }
   color: var(--faint);
   border-bottom: 1px solid var(--line);
   padding-bottom: 14px;
-  margin-bottom: clamp(22px, 4.5vh, 48px);
+  margin-bottom: clamp(22px, 4vh, 42px);
 }
 
 /* giant Archivo display type */
@@ -370,31 +404,23 @@ html[data-theme="light"] .planet::after { opacity: 0.35; }
 }
 
 .hero-intro h1 {
-  font-size: clamp(3.2rem, 12.5vw, 10.5rem);
+  font-size: clamp(3rem, 8.2vw, 6.6rem);
   margin: 0;
-}
-
-.hero-foot {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  gap: 34px;
-  flex-wrap: wrap;
-  margin-top: clamp(22px, 4vh, 44px);
+  text-shadow: 0 2px 40px color-mix(in srgb, var(--bg) 70%, transparent);
 }
 
 .hero-line {
-  font-size: clamp(0.96rem, 1.5vw, 1.08rem);
+  font-size: clamp(0.96rem, 1.5vw, 1.06rem);
   color: var(--muted);
-  max-width: 520px;
-  margin: 0;
+  max-width: 480px;
+  margin: clamp(18px, 3vh, 30px) 0 26px;
 }
 
 .hero-cta {
   display: flex;
   gap: 14px;
   flex-wrap: wrap;
-  flex: none;
+  margin-bottom: clamp(22px, 4vh, 40px);
 }
 
 .btn-primary, .btn-outline {
@@ -419,30 +445,16 @@ html[data-theme="light"] .planet::after { opacity: 0.35; }
 }
 .btn-outline:hover { transform: translateY(-2px); border-color: var(--accent); text-decoration: none; }
 
-/* ---------- universe in the sky (git-graph of a life) ----------
-   No panel, no box: the graph is drawn straight onto the night
-   sky of the hero, floating above the planet's horizon. */
-.universe-hero {
-  position: relative;
-  z-index: 3;
-  max-width: 1160px;
-  margin: clamp(30px, 6vh, 64px) auto 0;
-}
-
 .prompt {
-  font-size: 0.8rem;
-  color: var(--text);
+  font-size: 0.78rem;
+  color: var(--faint);
   letter-spacing: 0.02em;
-  margin: 0 0 4px;
-  border-bottom: 1px solid var(--line);
-  padding-bottom: 12px;
+  margin: 0;
 }
-.prompt-dim { color: var(--faint); }
+.prompt-dim { color: var(--faint); opacity: 0.75; }
 
 #universe {
   display: block;
-  width: 100%;
-  height: 440px;
   cursor: grab;
   touch-action: pan-y;
 }
@@ -467,8 +479,9 @@ html[data-theme="light"] .planet::after { opacity: 0.35; }
 
 .uni-controls {
   position: absolute;
-  right: 0;
-  bottom: 10px;
+  right: clamp(18px, 3vw, 46px);
+  bottom: clamp(18px, 4vh, 34px);
+  z-index: 4;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -1088,13 +1101,31 @@ html[data-theme="light"] .planet::after { opacity: 0.35; }
 @media (max-width: 840px) {
   .nav-links a:not(.nav-cta) { display: none; }
   .stats { grid-template-columns: repeat(2, 1fr); }
-  #universe { height: 380px; }
+
+  /* hero: text anchors to the top, the graph breathes below it,
+     and the shading turns vertical so both stay legible */
+  .hero {
+    align-items: flex-start;
+    min-height: 100svh;
+    padding-top: calc(var(--nav-h) + 34px);
+    padding-bottom: 96px;
+  }
+  .hero-scrim {
+    background: linear-gradient(180deg,
+      color-mix(in srgb, var(--bg) 92%, transparent) 0%,
+      color-mix(in srgb, var(--bg) 78%, transparent) 38%,
+      color-mix(in srgb, var(--bg) 30%, transparent) 58%,
+      transparent 78%);
+  }
+  .hero-intro { max-width: 100%; }
+  .hero-intro h1 { font-size: clamp(3rem, 13.5vw, 5rem); }
+  .hero-line { max-width: 560px; }
+  .uni-controls { right: auto; left: 22px; bottom: 20px; }
 }
 
 @media (max-width: 560px) {
   body { font-size: 15.5px; }
   .gallery { grid-template-columns: 1fr; }
-  .uni-hint { display: none; }
   .about-photo { width: 220px; height: 220px; }
   @keyframes orbit {
     from { transform: rotate(0deg)   translateY(-126px); }
@@ -1103,6 +1134,11 @@ html[data-theme="light"] .planet::after { opacity: 0.35; }
   .t-logo { width: 46px; height: 46px; }
   .co-roles { margin-left: 23px; padding-left: 24px; }
   .t-item::before { left: -29.5px; }
+
+  .hero { padding-bottom: 84px; }
+  .hero-cta { gap: 10px; }
+  .btn-primary, .btn-outline { padding: 12px 22px; font-size: 0.92rem; }
+  .prompt { font-size: 0.7rem; }
 }
 
 /* ---------- reduced motion ---------- */

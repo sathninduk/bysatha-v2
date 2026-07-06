@@ -24,7 +24,7 @@
 <nav class="nav">
   <a class="brand" href="#top">Sathnindu <span class="accent">Kottage</span></a>
   <div class="nav-links">
-    <a href="#universe-section">Timeline</a>
+    <a href="#top">Timeline</a>
     <a href="#career">Career</a>
     <a href="#research">Research</a>
     <a href="#oss">Open Source</a>
@@ -40,13 +40,17 @@
     <div class="moon"></div>
     <div class="planet"></div>
   </div>
-  <div class="hero-intro">
-    <div class="hero-top mono">
-      <span>©2026</span>
-      <span>/BUILDING SINCE 2020</span>
-    </div>
-    <h1 class="display">SOFTWARE<br/><span class="accent">ENGINEER</span></h1>
-    <div class="hero-foot">
+  <canvas id="universe" aria-label="Interactive git-graph timeline of Sathnindu Kottage's career"></canvas>
+  <div class="hero-scrim" aria-hidden="true"></div>
+  <div id="uni-tooltip"></div>
+
+  <div class="hero-grid">
+    <div class="hero-intro">
+      <div class="hero-top mono">
+        <span>©2026</span>
+        <span>/BUILDING SINCE 2020</span>
+      </div>
+      <h1 class="display">SOFTWARE<br/><span class="accent">ENGINEER</span></h1>
       <p class="hero-line">
         Sathnindu Kottage — Senior FinTech Software Engineer, framework author and published
         researcher. Based in Colombo, Sri Lanka; building for the world.
@@ -55,17 +59,13 @@
         <a href="mailto:hello@bysatha.com" class="btn-primary">Get in touch</a>
         <a href="https://github.com/sathninduk" target="_blank" rel="noreferrer" class="btn-outline">Follow on GitHub</a>
       </div>
+      <p class="prompt mono">git log --graph --all <span class="prompt-dim">· drag the sky to explore · select any commit</span></p>
     </div>
   </div>
 
-  <div class="universe-hero" id="universe-section">
-    <p class="prompt mono">git log --graph --all <span class="prompt-dim">— a career under version control · drag to explore · select any commit</span></p>
-    <canvas id="universe"></canvas>
-    <div id="uni-tooltip"></div>
-    <div class="uni-controls">
-      <button onclick="universeJump('start')">⇤ 2005</button>
-      <button onclick="universeJump('head')">HEAD ⇥</button>
-    </div>
+  <div class="uni-controls">
+    <button onclick="universeJump('start')">⇤ 2005</button>
+    <button onclick="universeJump('head')">HEAD ⇥</button>
   </div>
 </header>
 

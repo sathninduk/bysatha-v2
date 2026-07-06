@@ -95,8 +95,15 @@
   let dragging = false, lastPX = 0, moved = 0;
   let hoverNode = null;
 
+  /* vertical offset: center the lane band in tall (hero) canvases;
+     on narrow screens sink it lower, beneath the overlaid text */
+  function yOffset() {
+    const f = W < 840 ? 0.74 : 0.56;
+    return Math.max(10, (H - worldH * scaleY) * f);
+  }
+
   function worldToScreen(n) {
-    return { x: n.x - camX, y: n.y * scaleY + 10 };
+    return { x: n.x - camX, y: n.y * scaleY + yOffset() };
   }
 
   function pickNode(px, py) {
@@ -186,9 +193,13 @@
       if (Math.abs(targetCamX - camX) < 0.5) targetCamX = null;
     }
 
-    const yOf = (laneId) => laneY[laneId] * scaleY + 10;
+    const yOff = yOffset();
+    const yOf = (laneId) => laneY[laneId] * scaleY + yOff;
+    const bandTop = Math.max(4, yOff - 44);
+    const bandBot = Math.min(H - 18, yOff + worldH * scaleY + 26);
 
-    /* year ticks */
+    /* year ticks — confined to the lane band so they don't
+       run through the overlaid hero type */
     ctx.font = "11px 'JetBrains Mono', monospace";
     const TC = themeC();
     ctx.fillStyle = TC.tickText;
@@ -197,10 +208,10 @@
       const x = (y - YEAR_MIN) * PX_PER_YEAR - camX;
       if (x < -60 || x > W + 60) continue;
       ctx.beginPath();
-      ctx.moveTo(x, 4);
-      ctx.lineTo(x, H - 18);
+      ctx.moveTo(x, bandTop);
+      ctx.lineTo(x, bandBot);
       ctx.stroke();
-      ctx.fillText(String(y), x + 5, H - 8);
+      ctx.fillText(String(y), x + 5, bandBot + 14);
     }
 
     /* lane lines */
