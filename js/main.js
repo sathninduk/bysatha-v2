@@ -30,6 +30,16 @@
   );
   document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
 
+  /* ---------- cursor spotlight on cards (delegated, so it also
+     covers cards rendered later) ---------- */
+  document.addEventListener("pointermove", (e) => {
+    const card = e.target.closest(".project, .repo, .stat, .t-item");
+    if (!card) return;
+    const r = card.getBoundingClientRect();
+    card.style.setProperty("--mx", `${e.clientX - r.left}px`);
+    card.style.setProperty("--my", `${e.clientY - r.top}px`);
+  }, { passive: true });
+
   /* ---------- stats (count-up) ---------- */
   const statsEl = document.getElementById("stats");
   if (statsEl) {
@@ -49,14 +59,6 @@
         <span class="p-badge ${p.badge === "flagship" ? "flagship" : ""}">${p.badge}</span>
       </a>`
     ).join("");
-    /* spotlight follows cursor */
-    projEl.querySelectorAll(".project").forEach((card) => {
-      card.addEventListener("pointermove", (e) => {
-        const r = card.getBoundingClientRect();
-        card.style.setProperty("--mx", `${e.clientX - r.left}px`);
-        card.style.setProperty("--my", `${e.clientY - r.top}px`);
-      });
-    });
   }
 
   /* ---------- footer year ---------- */

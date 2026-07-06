@@ -725,7 +725,7 @@ html[data-theme="light"] .planet::after { opacity: 0.35; }
   backdrop-filter: blur(8px);
   transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
 }
-.stat:hover { transform: translateY(-3px); border-color: var(--line-strong); box-shadow: var(--glow-indigo); }
+.stat:hover { transform: translateY(-4px); border-color: var(--line-strong); box-shadow: 0 20px 60px rgba(2, 4, 12, 0.5), var(--glow-indigo); }
 .stat .n {
   font-size: 1.55rem;
   font-weight: 850;
@@ -791,7 +791,7 @@ html[data-theme="light"] .planet::after { opacity: 0.35; }
   backdrop-filter: blur(8px);
   transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
 }
-.t-item:hover { transform: translateX(5px); border-color: var(--line-strong); box-shadow: var(--glow-indigo); }
+.t-item:hover { transform: translateY(-4px); border-color: var(--line-strong); box-shadow: 0 20px 60px rgba(2, 4, 12, 0.5), var(--glow-indigo); }
 /* dot connecting each role card to the spine */
 .t-item::before {
   content: "";
@@ -1035,7 +1035,7 @@ html[data-theme="light"] .planet::after { opacity: 0.35; }
   color: var(--text);
   transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
 }
-.repo:hover { transform: translateY(-3px); border-color: var(--cyan); box-shadow: var(--glow-indigo); text-decoration: none; }
+.repo:hover { transform: translateY(-4px); border-color: var(--line-strong); box-shadow: 0 20px 60px rgba(2, 4, 12, 0.5), var(--glow-indigo); text-decoration: none; }
 .r-name { font-family: var(--mono); font-size: 0.88rem; color: var(--cyan); font-weight: 600; }
 .repo p { color: var(--muted); font-size: 0.85rem; margin: 8px 0 12px; min-height: 2.4em; }
 .r-meta { display: flex; gap: 16px; font-family: var(--mono); font-size: 0.74rem; color: var(--faint); }
@@ -1202,6 +1202,22 @@ html[data-theme="light"] .planet::after { opacity: 0.35; }
   .btn-primary, .btn-outline { padding: 12px 22px; font-size: 0.92rem; }
   .prompt { font-size: 0.7rem; }
 }
+
+
+/* ---------- shared cursor spotlight (same as .project) ---------- */
+.stat, .repo { position: relative; }
+.stat::before, .repo::before, .t-item::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(320px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(124, 140, 255, 0.14), transparent 65%);
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+}
+.stat:hover::before, .repo:hover::before, .t-item:hover::after { opacity: 1; }
 
 /* ---------- reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
