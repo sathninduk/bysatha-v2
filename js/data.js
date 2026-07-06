@@ -6,11 +6,11 @@
    ============================================================ */
 
 const LANES = [
-  { id: "career",      label: "career",      color: "#5b6ee0" },
-  { id: "research",    label: "research",    color: "#9a5fd0" },
-  { id: "open-source", label: "open-source", color: "#e0703f" },
-  { id: "community",   label: "community",   color: "#cf5390" },
-  { id: "education",   label: "education",   color: "#2f9e6e" },
+  { id: "career",      label: "career",      color: "#6478ff" },
+  { id: "research",    label: "research",    color: "#a855f7" },
+  { id: "open-source", label: "open-source", color: "#ff7a4d" },
+  { id: "community",   label: "community",   color: "#ec4899" },
+  { id: "education",   label: "education",   color: "#10b981" },
 ];
 
 /* date: "YYYY-MM". tag = release-style badge. head = current position.

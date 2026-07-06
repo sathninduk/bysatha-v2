@@ -38,24 +38,25 @@
     ).join("");
   }
 
-  /* ---------- projects — editorial index rows ---------- */
+  /* ---------- projects ---------- */
   const projEl = document.getElementById("projects");
   if (projEl) {
     projEl.innerHTML = PROJECTS.map(
-      (p, i) => `
-      <a class="work" href="${p.link}" target="_blank" rel="noreferrer">
-        <span class="w-idx mono">${String(i + 1).padStart(2, "0")}</span>
-        <div class="w-main">
-          <h3>${p.name}</h3>
-          <p>${p.desc}</p>
-        </div>
-        <div class="w-side">
-          <span>${p.lang}</span>
-          <span class="w-badge ${p.badge === "flagship" ? "flagship" : ""}">${p.badge}</span>
-        </div>
-        <span class="w-arrow">↗</span>
+      (p) => `
+      <a class="project" href="${p.link}" target="_blank" rel="noreferrer">
+        <div class="p-top"><h3>${p.name}</h3><span class="p-lang">${p.lang}</span></div>
+        <p>${p.desc}</p>
+        <span class="p-badge ${p.badge === "flagship" ? "flagship" : ""}">${p.badge}</span>
       </a>`
     ).join("");
+    /* spotlight follows cursor */
+    projEl.querySelectorAll(".project").forEach((card) => {
+      card.addEventListener("pointermove", (e) => {
+        const r = card.getBoundingClientRect();
+        card.style.setProperty("--mx", `${e.clientX - r.left}px`);
+        card.style.setProperty("--my", `${e.clientY - r.top}px`);
+      });
+    });
   }
 
   /* ---------- footer year ---------- */
@@ -175,8 +176,8 @@
       const w = cc.clientWidth, h = cc.clientHeight;
       cctx.clearRect(0, 0, w, h);
       const dark = document.documentElement.dataset.theme === "dark";
-      const core = dark ? "250,247,243" : "17,17,16";
-      const halo = dark ? "255,107,74" : "224,79,46";
+      const core = dark ? "61,220,151" : "10,158,107";
+      const halo = dark ? "56,225,255" : "8,145,178";
       for (const s of stars) {
         const tw = 0.7 + 0.3 * Math.sin(s.p + now / 800);
         cctx.beginPath();
