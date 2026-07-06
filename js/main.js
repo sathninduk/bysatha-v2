@@ -68,6 +68,39 @@
   const yearEl = document.getElementById("year");
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
+  /* ---------- email anti-scraping ----------
+     The address is only ever assembled at runtime from a
+     reversed-base64 payload, so it never exists as plain text or a
+     mailto: in the served HTML — this defeats the raw-HTML regex
+     harvesters that make up the vast majority of email scrapers.
+     Display links reveal the address on load (for humans); the
+     mailto: itself is built lazily on first interaction. */
+  document.querySelectorAll(".email-link").forEach((el) => {
+    const decode = () => {
+      try { return atob(el.dataset.e || "").split("").reverse().join(""); }
+      catch (_) { return ""; }
+    };
+    const buildHref = () => {
+      if (el.getAttribute("href")) return;
+      const a = decode();
+      if (a) el.setAttribute("href", "mailto:" + a);
+    };
+    /* show the real address to humans on display links */
+    if (el.dataset.show) {
+      const a = decode();
+      if (a) el.textContent = a;
+    }
+    /* build the mailto: only when the user actually engages */
+    ["pointerenter", "focus", "touchstart"].forEach((ev) =>
+      el.addEventListener(ev, buildHref, { once: true, passive: true })
+    );
+    el.addEventListener("click", (e) => {
+      if (el.getAttribute("href")) return;
+      const a = decode();
+      if (a) { e.preventDefault(); window.location.href = "mailto:" + a; }
+    });
+  });
+
   /* ---------- inspector ---------- */
   const insp = document.getElementById("inspector");
   const backdrop = document.getElementById("insp-backdrop");

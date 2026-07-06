@@ -1101,6 +1101,8 @@ html[data-theme="light"] .planet::after { opacity: 0.35; }
 .contact .sec-sub { margin-left: auto; margin-right: auto; }
 
 .contact-big { display: flex; flex-direction: column; gap: 8px; margin: 26px 0 30px; }
+/* email links have no href until first interaction — keep them clickable */
+.email-link { cursor: pointer; }
 .contact-line {
   font-size: clamp(1.4rem, 4.4vw, 2.6rem);
   font-weight: 850;
