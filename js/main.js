@@ -176,8 +176,8 @@
       const w = cc.clientWidth, h = cc.clientHeight;
       cctx.clearRect(0, 0, w, h);
       const dark = document.documentElement.dataset.theme === "dark";
-      const core = dark ? "63,185,80" : "26,127,55";
-      const halo = dark ? "46,160,67" : "74,194,107";
+      const core = dark ? "61,220,151" : "10,158,107";
+      const halo = dark ? "56,225,255" : "8,145,178";
       for (const s of stars) {
         const tw = 0.7 + 0.3 * Math.sin(s.p + now / 800);
         cctx.beginPath();
