@@ -370,6 +370,7 @@ html[data-theme="light"] .planet::after { opacity: 0.35; }
   width: 100%;
   max-width: 1160px;
   margin: 0 auto;
+  pointer-events: none;   /* clicks fall through to the canvas */
 }
 
 /* text block overlaid on the left; empty areas let the sky
