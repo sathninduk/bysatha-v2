@@ -590,13 +590,78 @@ html[data-theme="light"] .planet::after { opacity: 0.35; }
 .insp-backdrop.open { opacity: 1; pointer-events: auto; }
 
 /* ============================================================
+   PLANET PASSES — each section arrives as its own world:
+   a glowing horizon arc in the section's colour rises across
+   the full viewport between sections.
+   ============================================================ */
+.planet-pass {
+  position: relative;
+  height: 150px;
+  margin-top: clamp(50px, 9vh, 90px);
+  overflow: hidden;
+  pointer-events: none;
+}
+/* the planet body — only its top rim enters the frame */
+.planet-pass::before {
+  content: "";
+  position: absolute;
+  top: 42px;
+  left: 50%;
+  width: max(240vw, 2000px);
+  height: max(240vw, 2000px);
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 4%,
+      color-mix(in srgb, var(--rail, var(--indigo)) 26%, var(--bg)) 0%,
+      color-mix(in srgb, var(--rail, var(--indigo)) 10%, var(--bg)) 12%,
+      var(--bg) 34%);
+  box-shadow:
+    0 -3px 16px 1px  color-mix(in srgb, var(--rail, var(--indigo)) 75%, transparent),
+    0 -12px 54px 6px color-mix(in srgb, var(--rail, var(--indigo)) 38%, transparent),
+    0 -28px 130px 24px color-mix(in srgb, var(--rail, var(--indigo)) 16%, transparent);
+}
+/* a small companion moon drifting near the horizon */
+.planet-pass::after {
+  content: "";
+  position: absolute;
+  top: 16px;
+  left: 13%;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 32% 30%,
+    #ffffff 0%,
+    color-mix(in srgb, var(--rail, var(--indigo)) 75%, #ffffff) 45%,
+    color-mix(in srgb, var(--rail, var(--indigo)) 60%, #000000) 95%);
+  box-shadow: 0 0 14px color-mix(in srgb, var(--rail, var(--indigo)) 70%, transparent);
+  animation: pass-moon 12s ease-in-out infinite alternate;
+}
+.planet-pass.flip::after { left: auto; right: 13%; }
+@keyframes pass-moon {
+  from { transform: translate(0, 0); }
+  to   { transform: translate(26px, 10px); }
+}
+html[data-theme="light"] .planet-pass::before {
+  background:
+    radial-gradient(circle at 50% 4%,
+      color-mix(in srgb, var(--rail, var(--indigo)) 30%, #ffffff) 0%,
+      color-mix(in srgb, var(--rail, var(--indigo)) 12%, var(--bg)) 14%,
+      var(--bg) 36%);
+  box-shadow:
+    0 -3px 16px 1px  color-mix(in srgb, var(--rail, var(--indigo)) 55%, transparent),
+    0 -12px 54px 6px color-mix(in srgb, var(--rail, var(--indigo)) 26%, transparent),
+    0 -28px 130px 24px color-mix(in srgb, var(--rail, var(--indigo)) 12%, transparent);
+}
+
+/* ============================================================
    SECTIONS
    ============================================================ */
 .section {
   position: relative;
   max-width: 1160px;
   margin: 0 auto;
-  padding: 110px 22px 30px;
+  padding: 44px 22px 30px;
 }
 
 .sec-label {
