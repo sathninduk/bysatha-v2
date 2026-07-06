@@ -76,6 +76,11 @@
     const palette = dark ? DARK_COLORS : LIGHT_COLORS;
     const baseA = dark ? 0.7 : 0.20;
 
+    /* descend onto the planet: past the hero the sky quiets down —
+       fewer, fainter stars, like a night sky seen from land */
+    const depth = window.scrollY / H;
+    const scrollFade = depth <= 0.85 ? 1 : Math.max(0.22, 1 - (depth - 0.85) * 0.22);
+
     /* eased pointer parallax */
     cx += (px - cx) * 0.03;
     cy += (py - cy) * 0.03;
@@ -86,8 +91,12 @@
       for (const st of layer.stars) {
         const tw = 0.5 + 0.5 * Math.sin(st.p + (now / 1000) * st.s * 2);
         const rgb = palette[Math.floor(st.hue * palette.length)];
-        const a = baseA * (0.35 + 0.65 * tw) * (0.5 + layer.depth * 0.5);
-        const x = st.x + ox, y = st.y + oy;
+        const y0 = st.y + oy;
+        /* horizon haze: stars thin toward the bottom of the screen,
+           where the land scenes live */
+        const vf = 1 - 0.45 * Math.min(1, Math.max(0, y0 / H)) * (depth > 0.85 ? 1 : 0.4);
+        const a = baseA * (0.35 + 0.65 * tw) * (0.5 + layer.depth * 0.5) * scrollFade * vf;
+        const x = st.x + ox, y = y0;
 
         ctx.beginPath();
         ctx.arc(x, y, st.r, 0, 7);
@@ -111,9 +120,9 @@
       }
     }
 
-    /* shooting stars — night side only */
+    /* shooting stars — night side only, rarer once down on the land */
     if (dark) {
-      if (meteors.length < 2 && Math.random() < 0.004) spawnMeteor();
+      if (meteors.length < 2 && Math.random() < 0.004 * scrollFade) spawnMeteor();
       for (const m of meteors) {
         m.x += m.vx * 2.4;
         m.y += m.vy * 2.4;
@@ -123,7 +132,7 @@
         const grad = ctx.createLinearGradient(
           m.x, m.y, m.x - m.vx * tail, m.y - m.vy * tail
         );
-        grad.addColorStop(0, `rgba(${rgb},${(0.9 * m.life).toFixed(3)})`);
+        grad.addColorStop(0, `rgba(${rgb},${(0.9 * m.life * scrollFade).toFixed(3)})`);
         grad.addColorStop(1, `rgba(${rgb},0)`);
         ctx.strokeStyle = grad;
         ctx.lineWidth = 1.8;
