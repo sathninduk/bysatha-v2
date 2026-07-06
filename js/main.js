@@ -30,15 +30,18 @@
   );
   document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
 
-  /* ---------- cursor spotlight on cards (delegated, so it also
-     covers cards rendered later) ---------- */
-  document.addEventListener("pointermove", (e) => {
-    const card = e.target.closest(".project, .repo, .stat, .t-item");
-    if (!card) return;
-    const r = card.getBoundingClientRect();
-    card.style.setProperty("--mx", `${e.clientX - r.left}px`);
-    card.style.setProperty("--my", `${e.clientY - r.top}px`);
-  }, { passive: true });
+  /* ---------- cursor spotlight on cards ---------- */
+  function trackSpotlight() {
+    document.querySelectorAll(".project, .repo, .stat, .t-item").forEach((card) => {
+      if (card.dataset.spot) return;
+      card.dataset.spot = "1";
+      card.addEventListener("pointermove", (e) => {
+        const r = card.getBoundingClientRect();
+        card.style.setProperty("--mx", `${e.clientX - r.left}px`);
+        card.style.setProperty("--my", `${e.clientY - r.top}px`);
+      });
+    });
+  }
 
   /* ---------- stats (count-up) ---------- */
   const statsEl = document.getElementById("stats");
@@ -104,6 +107,7 @@
      optionally refreshed client-side from the public API —
      no token ever ships with this site)
      ============================================================ */
+  trackSpotlight();               /* static + already-rendered cards */
   if (typeof GH === "undefined") return;
 
   /* ---- stat cards with count-up ---- */
@@ -341,4 +345,7 @@
       if (foot) foot.textContent = `snapshot ${GH.fetched} · profile refreshed live from the GitHub API`;
     })
     .catch(() => {});
+
+  /* bind spotlight on the GitHub cards rendered above */
+  trackSpotlight();
 })();
