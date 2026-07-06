@@ -595,68 +595,86 @@ html[data-theme="light"] .planet::after { opacity: 0.35; }
 .insp-backdrop.open { opacity: 1; pointer-events: auto; }
 
 /* ============================================================
-   PLANET PASSES — each section arrives as its own world:
-   a glowing horizon arc in the section's colour rises across
-   the full viewport between sections.
+   TERRAIN SCENES — the planet's land continues down the page.
+   Each region is a different landscape in the section's colour:
+   rolling hills, mountain peaks, crystal spires, mesas, seas,
+   dunes. Two ridge layers give depth; the near ridge carries a
+   lit rim, and the region's sky glows behind it.
    ============================================================ */
-.planet-pass {
+.terrain {
   position: relative;
-  height: 150px;
-  margin-top: clamp(50px, 9vh, 90px);
+  height: 190px;
+  margin-top: clamp(46px, 8vh, 84px);
   overflow: hidden;
   pointer-events: none;
+  /* the coming region's sky glow on the horizon */
+  background: radial-gradient(62% 95% at 50% 100%,
+    color-mix(in srgb, var(--rail, var(--indigo)) 13%, transparent),
+    transparent 72%);
 }
-/* the planet body — only its top rim enters the frame */
-.planet-pass::before {
+
+.terrain::before,
+.terrain::after {
   content: "";
   position: absolute;
-  top: 42px;
-  left: 50%;
-  width: max(240vw, 2000px);
-  height: max(240vw, 2000px);
-  transform: translateX(-50%);
-  border-radius: 50%;
-  background:
-    radial-gradient(circle at 50% 4%,
-      color-mix(in srgb, var(--rail, var(--indigo)) 26%, var(--bg)) 0%,
-      color-mix(in srgb, var(--rail, var(--indigo)) 10%, var(--bg)) 12%,
-      var(--bg) 34%);
-  box-shadow:
-    0 -3px 16px 1px  color-mix(in srgb, var(--rail, var(--indigo)) 75%, transparent),
-    0 -12px 54px 6px color-mix(in srgb, var(--rail, var(--indigo)) 38%, transparent),
-    0 -28px 130px 24px color-mix(in srgb, var(--rail, var(--indigo)) 16%, transparent);
+  inset: 0;
+  mask-repeat: no-repeat;
+  -webkit-mask-repeat: no-repeat;
 }
-/* a small companion moon drifting near the horizon */
-.planet-pass::after {
-  content: "";
-  position: absolute;
-  top: 16px;
-  left: 13%;
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  background: radial-gradient(circle at 32% 30%,
-    #ffffff 0%,
-    color-mix(in srgb, var(--rail, var(--indigo)) 75%, #ffffff) 45%,
-    color-mix(in srgb, var(--rail, var(--indigo)) 60%, #000000) 95%);
-  box-shadow: 0 0 14px color-mix(in srgb, var(--rail, var(--indigo)) 70%, transparent);
-  animation: pass-moon 12s ease-in-out infinite alternate;
+
+/* far ridge — hazy, taller, drifted sideways */
+.terrain::before {
+  background: color-mix(in srgb, var(--rail, var(--indigo)) 20%, var(--bg));
+  opacity: 0.78;
+  mask-position: 62% bottom;
+  -webkit-mask-position: 62% bottom;
+  mask-size: 140% 92%;
+  -webkit-mask-size: 140% 92%;
 }
-.planet-pass.flip::after { left: auto; right: 13%; }
-@keyframes pass-moon {
-  from { transform: translate(0, 0); }
-  to   { transform: translate(26px, 10px); }
+
+/* near ridge — deeper land with a lit rim against the sky */
+.terrain::after {
+  background: linear-gradient(180deg,
+    color-mix(in srgb, var(--rail, var(--indigo)) 36%, var(--bg)) 0%,
+    color-mix(in srgb, var(--rail, var(--indigo)) 12%, var(--bg)) 50%,
+    var(--bg) 100%);
+  mask-position: 18% bottom;
+  -webkit-mask-position: 18% bottom;
+  mask-size: 118% 64%;
+  -webkit-mask-size: 118% 64%;
+  filter: drop-shadow(0 -3px 12px color-mix(in srgb, var(--rail, var(--indigo)) 50%, transparent));
 }
-html[data-theme="light"] .planet-pass::before {
-  background:
-    radial-gradient(circle at 50% 4%,
-      color-mix(in srgb, var(--rail, var(--indigo)) 30%, #ffffff) 0%,
-      color-mix(in srgb, var(--rail, var(--indigo)) 12%, var(--bg)) 14%,
-      var(--bg) 36%);
-  box-shadow:
-    0 -3px 16px 1px  color-mix(in srgb, var(--rail, var(--indigo)) 55%, transparent),
-    0 -12px 54px 6px color-mix(in srgb, var(--rail, var(--indigo)) 26%, transparent),
-    0 -28px 130px 24px color-mix(in srgb, var(--rail, var(--indigo)) 12%, transparent);
+
+/* ---- landform silhouettes ---- */
+.t-hills::before, .t-hills::after {
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 200' preserveAspectRatio='none'%3E%3Cpath d='M0 200 L0 138 Q120 84 250 118 T520 108 T780 126 T1040 102 L1200 122 L1200 200 Z'/%3E%3C/svg%3E");
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 200' preserveAspectRatio='none'%3E%3Cpath d='M0 200 L0 138 Q120 84 250 118 T520 108 T780 126 T1040 102 L1200 122 L1200 200 Z'/%3E%3C/svg%3E");
+}
+.t-peaks::before, .t-peaks::after {
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 200' preserveAspectRatio='none'%3E%3Cpath d='M0 200 L0 128 L82 62 L148 108 L226 34 L306 102 L378 66 L466 126 L556 52 L642 112 L728 44 L818 116 L902 74 L998 126 L1082 68 L1200 138 L1200 200 Z'/%3E%3C/svg%3E");
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 200' preserveAspectRatio='none'%3E%3Cpath d='M0 200 L0 128 L82 62 L148 108 L226 34 L306 102 L378 66 L466 126 L556 52 L642 112 L728 44 L818 116 L902 74 L998 126 L1082 68 L1200 138 L1200 200 Z'/%3E%3C/svg%3E");
+}
+.t-crystals::before, .t-crystals::after {
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 200' preserveAspectRatio='none'%3E%3Cpath d='M0 200 L0 152 L52 46 L84 152 L132 96 L164 152 L232 24 L272 152 L336 76 L372 152 L452 38 L496 152 L556 104 L594 152 L672 30 L714 152 L792 84 L830 152 L912 48 L954 152 L1032 94 L1068 152 L1148 56 L1200 140 L1200 200 Z'/%3E%3C/svg%3E");
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 200' preserveAspectRatio='none'%3E%3Cpath d='M0 200 L0 152 L52 46 L84 152 L132 96 L164 152 L232 24 L272 152 L336 76 L372 152 L452 38 L496 152 L556 104 L594 152 L672 30 L714 152 L792 84 L830 152 L912 48 L954 152 L1032 94 L1068 152 L1148 56 L1200 140 L1200 200 Z'/%3E%3C/svg%3E");
+}
+.t-mesa::before, .t-mesa::after {
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 200' preserveAspectRatio='none'%3E%3Cpath d='M0 200 L0 118 L74 118 L94 70 L212 70 L232 118 L342 118 L362 92 L452 92 L472 128 L596 128 L616 58 L756 58 L776 118 L888 118 L908 86 L1024 86 L1044 124 L1200 124 L1200 200 Z'/%3E%3C/svg%3E");
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 200' preserveAspectRatio='none'%3E%3Cpath d='M0 200 L0 118 L74 118 L94 70 L212 70 L232 118 L342 118 L362 92 L452 92 L472 128 L596 128 L616 58 L756 58 L776 118 L888 118 L908 86 L1024 86 L1044 124 L1200 124 L1200 200 Z'/%3E%3C/svg%3E");
+}
+.t-waves::before, .t-waves::after {
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 200' preserveAspectRatio='none'%3E%3Cpath d='M0 200 L0 128 Q75 96 150 128 T300 128 T450 128 T600 128 T750 128 T900 128 T1050 128 T1200 128 L1200 200 Z'/%3E%3C/svg%3E");
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 200' preserveAspectRatio='none'%3E%3Cpath d='M0 200 L0 128 Q75 96 150 128 T300 128 T450 128 T600 128 T750 128 T900 128 T1050 128 T1200 128 L1200 200 Z'/%3E%3C/svg%3E");
+}
+.t-dunes::before, .t-dunes::after {
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 200' preserveAspectRatio='none'%3E%3Cpath d='M0 200 L0 136 Q170 66 330 124 Q420 154 540 112 Q710 54 866 128 Q950 162 1076 108 Q1140 84 1200 116 L1200 200 Z'/%3E%3C/svg%3E");
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 200' preserveAspectRatio='none'%3E%3Cpath d='M0 200 L0 136 Q170 66 330 124 Q420 154 540 112 Q710 54 866 128 Q950 162 1076 108 Q1140 84 1200 116 L1200 200 Z'/%3E%3C/svg%3E");
+}
+
+/* light theme: pastel lands, softer rim */
+html[data-theme="light"] .terrain::before { opacity: 0.55; }
+html[data-theme="light"] .terrain::after {
+  filter: drop-shadow(0 -3px 10px color-mix(in srgb, var(--rail, var(--indigo)) 32%, transparent));
 }
 
 /* ============================================================
