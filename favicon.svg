@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="bysatha planet mark">
+  <defs>
+    <radialGradient id="bg" cx="40%" cy="34%" r="95%">
+      <stop offset="0%" stop-color="#12193a"/>
+      <stop offset="55%" stop-color="#090d1d"/>
+      <stop offset="100%" stop-color="#04060f"/>
+    </radialGradient>
+    <radialGradient id="planet" cx="35%" cy="30%" r="75%">
+      <stop offset="0%" stop-color="#9db4ff"/>
+      <stop offset="45%" stop-color="#5a6cf0"/>
+      <stop offset="100%" stop-color="#241f66"/>
+    </radialGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="7"/>
+    </filter>
+  </defs>
+  <rect width="512" height="512" rx="113" fill="url(#bg)"/>
+  <circle cx="256" cy="256" r="174" fill="#7c8cff" opacity="0.30" filter="url(#glow)"/>
+  <circle cx="256" cy="256" r="166" fill="url(#planet)"/>
+  <g transform="rotate(-18 256 256)">
+    <ellipse cx="256" cy="256" rx="240" ry="72" fill="none" stroke="#38e1ff" stroke-width="14" opacity="0.22" filter="url(#glow)"/>
+    <ellipse cx="256" cy="256" rx="240" ry="72" fill="none" stroke="#38e1ff" stroke-width="14" opacity="0.95"/>
+  </g>
+</svg>
