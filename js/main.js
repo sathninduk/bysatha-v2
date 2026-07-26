@@ -8,7 +8,7 @@
   const root = document.documentElement;
   const toggle = document.getElementById("theme-toggle");
   const saved = localStorage.getItem("theme");
-  root.dataset.theme = (saved === "dark" || saved === "light") ? saved : "dark";
+  root.dataset.theme = (saved === "dark" || saved === "light") ? saved : "light";
 
   function paintToggle() {
     if (toggle) toggle.textContent = root.dataset.theme === "dark" ? "☀" : "☾";
