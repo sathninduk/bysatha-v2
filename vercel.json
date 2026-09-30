@@ -1,0 +1,6 @@
+{
+  "rewrites": [
+    { "source": "/prep", "destination": "/api/prep" },
+    { "source": "/prep/", "destination": "/api/prep" }
+  ]
+}
