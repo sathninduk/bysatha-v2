@@ -27,6 +27,8 @@ const COMMITS = [
     desc: "Higher Diploma in Information Technology awarded en route to the degree." },
   { lane: "education", date: "2026-05", title: "First Class Honours", tag: "CGPA 3.74",
     desc: "Graduated with First Class Honours — CGPA 3.74 / 4.0, WGPA 3.73. Dean's List five times, with two perfect 4.0 semesters — achieved while working full-time in senior engineering roles." },
+  { lane: "education", date: "2026-10", title: "IET Prize 2026", tag: "award",
+    desc: "Awarded the IET Prize 2026 for the Outstanding Student of the Faculty of Computing at SLIIT." },
 
   // ---------------- community ----------------
   { lane: "community", date: "2010-06", title: "President — Anandian Astronomical Association",
